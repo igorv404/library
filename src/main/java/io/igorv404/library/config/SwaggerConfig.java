@@ -16,7 +16,7 @@ public class SwaggerConfig {
         .url("https://www.linkedin.com/in/igor-vilkov/");
     Info info = new Info()
         .title("Library")
-        .version("0.2.0")
+        .version("0.3.0")
         .description("System for managing library")
         .contact(contact);
     return new OpenAPI().info(info);
