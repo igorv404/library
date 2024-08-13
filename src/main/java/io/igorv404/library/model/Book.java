@@ -1,4 +1,4 @@
-package io.igorv404.library.config.model;
+package io.igorv404.library.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -21,23 +21,24 @@ import org.hibernate.validator.constraints.Length;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Book {
+
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;
 
   @Column(nullable = false)
-  @NotNull
-  @Length(min = 3)
-  @Pattern(regexp = "^[A-Z]")
+  @NotNull(message = "Value can't be null")
+  @Length(min = 3, message = "Value must be longer than 3")
+  @Pattern(regexp = "^[A-Z].*$", message = "Value must starts with capital letter")
   private String title;
 
   @Column(nullable = false)
-  @NotBlank
-  @Pattern(regexp = "^[A-Z]\\S* [A-Z]\\S*$")
+  @NotBlank(message = "Value can't be null or empty")
+  @Pattern(regexp = "^[A-Z]\\S* [A-Z]\\S*$", message = "Value must be as two words which starts with capital letter")
   private String author;
 
   @Column(nullable = false)
-  @NotNull
-  @Min(0)
+  @NotNull(message = "Value can't be null")
+  @Min(value = 0, message = "Value must be equal or bigger than 0")
   private Integer amount;
 }
