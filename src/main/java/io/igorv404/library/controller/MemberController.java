@@ -37,7 +37,7 @@ public class MemberController {
 
   @PatchMapping("/{id}")
   public Member update(@PathVariable Integer id, @RequestParam String memberName) {
-    return memberService.update(id, memberName);
+    return memberService.updateName(id, memberName);
   }
 
   @DeleteMapping("/{id}")

@@ -40,7 +40,7 @@ public class MemberService {
     return memberRepository.save(new Member(memberName));
   }
 
-  public Member update(Integer id, String memberName) {
+  public Member updateName(Integer id, String memberName) {
     Member existingMember = findById(id);
     existingMember.setName(memberName);
     return memberRepository.save(existingMember);

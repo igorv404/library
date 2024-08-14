@@ -101,13 +101,11 @@ class BookServiceTest {
   @Test
   public void shouldUpdateBook() {
     Book book = new Book(1, "Harry Potter and the Prisoner of Azkaban", "Joanne Rowling", 10);
-    when(bookRepository.findById(book.getId())).thenReturn(Optional.of(book1));
     when(bookRepository.save(book1)).thenReturn(book);
-    Book responseData = bookService.update(book);
-    System.out.println(responseData.getTitle());
+    Book responseData = bookService.update(book1);
     assertNotNull(responseData);
     assertEquals(book, responseData);
-    verify(bookRepository, times(1)).findById(book.getId());
+    verify(bookRepository, times(1)).save(book1);
   }
 
   @Test
