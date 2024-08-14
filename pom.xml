@@ -11,7 +11,7 @@
   </parent>
   <groupId>io.igorv404</groupId>
   <artifactId>library</artifactId>
-  <version>0.6.0</version>
+  <version>1.0.0</version>
   <name>library</name>
   <description>System for managing library</description>
   <properties>
