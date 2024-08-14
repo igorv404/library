@@ -1,5 +1,6 @@
 package io.igorv404.library.controller;
 
+import io.igorv404.library.dto.response.BorrowedBookDto;
 import io.igorv404.library.model.Book;
 import io.igorv404.library.service.BookService;
 import io.igorv404.library.util.ControllerTemplate;
@@ -51,5 +52,15 @@ public class BookController implements ControllerTemplate<Book, Integer> {
   @DeleteMapping("/{id}")
   public ResponseEntity<String> delete(@PathVariable Integer id) {
     return new ResponseEntity<>(bookService.delete(id), HttpStatus.ACCEPTED);
+  }
+
+  @GetMapping("/showBorrowedBooks")
+  public ResponseEntity<List<String>> findAllBorrowedBooks() {
+    return ResponseEntity.ok(bookService.findAllBorrowedBooks());
+  }
+
+  @GetMapping("/showBorrowedBooksInfo")
+  public ResponseEntity<List<BorrowedBookDto>> showInfoOfBorrowedBooks() {
+    return ResponseEntity.ok(bookService.showInfoOfBorrowedBooks());
   }
 }

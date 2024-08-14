@@ -1,5 +1,6 @@
 package io.igorv404.library.controller;
 
+import io.igorv404.library.exception.BookIsBorrowedException;
 import io.igorv404.library.exception.BookIsUnavailableNowException;
 import io.igorv404.library.exception.MemberDoesNotHaveThisBookException;
 import io.igorv404.library.exception.MemberHasAlreadyBorrowedThisBookException;
@@ -82,5 +83,12 @@ public class ExceptionHandlerController {
       MemberDoesNotHaveThisBookException e) {
     return new ResponseEntity<>(new RequestError(e.getMessage(), e.getHttpStatus()),
         HttpStatus.BAD_REQUEST);
+  }
+
+  @ExceptionHandler(value = {BookIsBorrowedException.class})
+  private ResponseEntity<RequestError> handleBookIsBorrowedException(
+      BookIsBorrowedException e) {
+    return new ResponseEntity<>(new RequestError(e.getMessage(), e.getHttpStatus()),
+        HttpStatus.NOT_ACCEPTABLE);
   }
 }

@@ -1,5 +1,7 @@
 package io.igorv404.library.service;
 
+import io.igorv404.library.dto.response.BorrowedBookDto;
+import io.igorv404.library.exception.BookIsBorrowedException;
 import io.igorv404.library.repository.BookRepository;
 import io.igorv404.library.util.ServiceTemplate;
 import io.igorv404.library.model.Book;
@@ -46,7 +48,18 @@ public class BookService implements ServiceTemplate<Book, Integer> {
   @Override
   public String delete(Integer id) {
     Book existingBook = findById(id);
+    if (bookRepository.isBookBorrowed(id)) {
+      throw new BookIsBorrowedException();
+    }
     bookRepository.deleteById(id);
     return String.format("Book \"%s\" was deleted", existingBook.getTitle());
+  }
+
+  public List<String> findAllBorrowedBooks() {
+    return bookRepository.findAllBorrowedBooks();
+  }
+
+  public List<BorrowedBookDto> showInfoOfBorrowedBooks() {
+    return bookRepository.showInfoOfBorrowedBooks();
   }
 }
