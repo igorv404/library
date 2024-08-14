@@ -38,11 +38,7 @@ public class BookService implements ServiceTemplate<Book, Integer> {
 
   @Override
   public Book update(Book entity) {
-    Book existingBook = findById(entity.getId());
-    existingBook.setTitle(entity.getTitle());
-    existingBook.setAuthor(entity.getAuthor());
-    existingBook.setAmount(entity.getAmount());
-    return bookRepository.save(existingBook);
+    return bookRepository.save(entity);
   }
 
   @Override

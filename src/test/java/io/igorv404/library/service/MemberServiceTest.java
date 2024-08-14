@@ -97,12 +97,12 @@ class MemberServiceTest {
   }
 
   @Test
-  public void shouldUpdateMember() {
+  public void shouldUpdateNameMember() {
     final Integer ID = 1;
     final Member member = new Member("Johnny");
     when(memberRepository.findById(ID)).thenReturn(Optional.of(member1));
     when(memberRepository.save(member1)).thenReturn(member);
-    Member responseData = memberService.update(ID, member.getName());
+    Member responseData = memberService.updateName(ID, member.getName());
     assertNotNull(responseData);
     assertEquals(member, responseData);
     verify(memberRepository, times(1)).save(member1);
