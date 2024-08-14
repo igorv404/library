@@ -10,6 +10,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import io.igorv404.library.dto.response.BorrowedBookDto;
+import io.igorv404.library.exception.BookIsBorrowedException;
 import io.igorv404.library.model.Book;
 import io.igorv404.library.repository.BookRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -117,6 +118,16 @@ class BookServiceTest {
     assertDoesNotThrow(() -> bookService.delete(ID));
     verify(bookRepository, times(1)).findById(ID);
     verify(bookRepository, times(1)).deleteById(ID);
+  }
+
+  @Test
+  public void shouldThrowExceptionWhenTriesToDeleteBorrowedBook() {
+    final Integer ID = 1;
+    when(bookRepository.findById(ID)).thenReturn(Optional.of(book1));
+    when(bookRepository.isBookBorrowed(ID)).thenReturn(true);
+    assertThrows(BookIsBorrowedException.class, () -> bookService.delete(ID));
+    verify(bookRepository, times(1)).findById(ID);
+    verify(bookRepository, times(0)).deleteById(ID);
   }
 
   @Test

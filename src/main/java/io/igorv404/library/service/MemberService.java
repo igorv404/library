@@ -13,10 +13,12 @@ import jakarta.persistence.EntityNotFoundException;
 import java.util.LinkedList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
+@Setter
 @RequiredArgsConstructor
 public class MemberService {
   private final MemberRepository memberRepository;
@@ -65,6 +67,7 @@ public class MemberService {
       throw new BookIsUnavailableNowException();
     }
     existingBook.setAmount(existingBook.getAmount() - 1);
+    bookService.update(existingBook);
     existingMember.getBorrowedBooks().add(existingBook);
     memberRepository.save(existingMember);
     return "Thanks for borrowing the book";
