@@ -1,5 +1,6 @@
 package io.igorv404.library.service;
 
+import io.igorv404.library.dto.response.BorrowedBookDto;
 import io.igorv404.library.exception.BookIsBorrowedException;
 import io.igorv404.library.repository.BookRepository;
 import io.igorv404.library.util.ServiceTemplate;
@@ -56,5 +57,9 @@ public class BookService implements ServiceTemplate<Book, Integer> {
 
   public List<String> findAllBorrowedBooks() {
     return bookRepository.findAllBorrowedBooks();
+  }
+
+  public List<BorrowedBookDto> showInfoOfBorrowedBooks() {
+    return bookRepository.showInfoOfBorrowedBooks();
   }
 }
