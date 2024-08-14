@@ -1,5 +1,6 @@
 package io.igorv404.library.service;
 
+import io.igorv404.library.exception.MemberHasBorrowedBooksException;
 import io.igorv404.library.model.Member;
 import io.igorv404.library.repository.MemberRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class MemberService {
+
   private final MemberRepository memberRepository;
 
   public List<Member> findAll() {
@@ -32,7 +34,11 @@ public class MemberService {
 
   public String delete(Integer id) {
     Member existingMember = findById(id);
-    memberRepository.deleteById(id);
+    if (existingMember.getBorrowedBooks().isEmpty()) {
+      memberRepository.deleteById(id);
+    } else {
+      throw new MemberHasBorrowedBooksException();
+    }
     return String.format("Member \"%s\" was deleted", existingMember.getName());
   }
 }
