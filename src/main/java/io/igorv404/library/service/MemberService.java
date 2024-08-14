@@ -1,18 +1,27 @@
 package io.igorv404.library.service;
 
+import io.igorv404.library.exception.BookIsUnavailableNowException;
+import io.igorv404.library.exception.MemberHasAlreadyBorrowedThisBookException;
 import io.igorv404.library.exception.MemberHasBorrowedBooksException;
+import io.igorv404.library.exception.MemberHasReachedBorrowedBooksLimitException;
+import io.igorv404.library.model.Book;
 import io.igorv404.library.model.Member;
 import io.igorv404.library.repository.MemberRepository;
 import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
 public class MemberService {
-
   private final MemberRepository memberRepository;
+
+  private final BookService bookService;
+
+  @Value("${app.max-amount-of-borrowed-books-per-member}")
+  private Integer maxAmountOfBorrowedBooksPerMember;
 
   public List<Member> findAll() {
     return memberRepository.findAll();
@@ -40,5 +49,21 @@ public class MemberService {
       throw new MemberHasBorrowedBooksException();
     }
     return String.format("Member \"%s\" was deleted", existingMember.getName());
+  }
+
+  public String borrowBook(Integer memberId, Integer bookId) {
+    Member existingMember = findById(memberId);
+    Book existingBook = bookService.findById(bookId);
+    if (existingMember.getBorrowedBooks().size() >= maxAmountOfBorrowedBooksPerMember) {
+      throw new MemberHasReachedBorrowedBooksLimitException();
+    } else if (existingMember.getBorrowedBooks().contains(existingBook)) {
+      throw new MemberHasAlreadyBorrowedThisBookException();
+    } else if (existingBook.getAmount() <= 0) {
+      throw new BookIsUnavailableNowException();
+    }
+    existingBook.setAmount(existingBook.getAmount() - 1);
+    existingMember.getBorrowedBooks().add(existingBook);
+    memberRepository.save(existingMember);
+    return "Thanks for borrowing the book";
   }
 }

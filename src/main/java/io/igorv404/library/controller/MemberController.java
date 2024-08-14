@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -30,17 +30,22 @@ public class MemberController {
   }
 
   @PostMapping
-  public Member save(@RequestBody String memberName) {
+  public Member save(@RequestParam String memberName) {
     return memberService.save(memberName);
   }
 
   @PatchMapping("/{id}")
-  public Member update(@PathVariable Integer id, @RequestBody String memberName) {
+  public Member update(@PathVariable Integer id, @RequestParam String memberName) {
     return memberService.update(id, memberName);
   }
 
   @DeleteMapping("/{id}")
   public String delete(@PathVariable Integer id) {
     return memberService.delete(id);
+  }
+
+  @PostMapping("/borrowBook/{memberId}")
+  public String borrowBook(@PathVariable Integer memberId, @RequestParam Integer bookId) {
+    return memberService.borrowBook(memberId, bookId);
   }
 }
