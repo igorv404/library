@@ -53,4 +53,8 @@ public class BookService implements ServiceTemplate<Book, Integer> {
     bookRepository.deleteById(id);
     return String.format("Book \"%s\" was deleted", existingBook.getTitle());
   }
+
+  public List<String> findAllBorrowedBooks() {
+    return bookRepository.findAllBorrowedBooks();
+  }
 }

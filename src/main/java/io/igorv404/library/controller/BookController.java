@@ -52,4 +52,9 @@ public class BookController implements ControllerTemplate<Book, Integer> {
   public ResponseEntity<String> delete(@PathVariable Integer id) {
     return new ResponseEntity<>(bookService.delete(id), HttpStatus.ACCEPTED);
   }
+
+  @GetMapping("/showBorrowedBooks")
+  public ResponseEntity<List<String>> findAllBorrowedBooks() {
+    return ResponseEntity.ok(bookService.findAllBorrowedBooks());
+  }
 }
