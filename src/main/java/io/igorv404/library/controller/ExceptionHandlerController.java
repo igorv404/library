@@ -1,24 +1,24 @@
 package io.igorv404.library.controller;
 
+import io.igorv404.library.exception.BookIsUnavailableNowException;
+import io.igorv404.library.exception.MemberDoesNotHaveThisBookException;
+import io.igorv404.library.exception.MemberHasAlreadyBorrowedThisBookException;
+import io.igorv404.library.exception.MemberHasBorrowedBooksException;
+import io.igorv404.library.exception.MemberHasReachedBorrowedBooksLimitException;
 import io.igorv404.library.model.RequestError;
 import jakarta.persistence.EntityNotFoundException;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @ControllerAdvice
 public class ExceptionHandlerController {
-
   @ExceptionHandler(value = {EntityNotFoundException.class})
   private ResponseEntity<RequestError> handleEntityNotFoundException() {
     return new ResponseEntity<>(
@@ -46,6 +46,41 @@ public class ExceptionHandlerController {
     });
     return new ResponseEntity<>(
         new RequestError(errorMessage.toString(), HttpStatus.BAD_REQUEST.value()),
+        HttpStatus.BAD_REQUEST);
+  }
+
+  @ExceptionHandler(value = {MemberHasBorrowedBooksException.class})
+  private ResponseEntity<RequestError> handleMemberHasBorrowedBooksException(
+      MemberHasBorrowedBooksException e) {
+    return new ResponseEntity<>(new RequestError(e.getMessage(), e.getHttpStatus()),
+        HttpStatus.NOT_ACCEPTABLE);
+  }
+
+  @ExceptionHandler(value = {MemberHasAlreadyBorrowedThisBookException.class})
+  private ResponseEntity<RequestError> handleMemberHasAlreadyBorrowedThisBookException(
+      MemberHasAlreadyBorrowedThisBookException e) {
+    return new ResponseEntity<>(new RequestError(e.getMessage(), e.getHttpStatus()),
+        HttpStatus.NOT_ACCEPTABLE);
+  }
+
+  @ExceptionHandler(value = {MemberHasReachedBorrowedBooksLimitException.class})
+  private ResponseEntity<RequestError> handleMemberHasReachedBorrowedBooksLimitException(
+      MemberHasReachedBorrowedBooksLimitException e) {
+    return new ResponseEntity<>(new RequestError(e.getMessage(), e.getHttpStatus()),
+        HttpStatus.NOT_ACCEPTABLE);
+  }
+
+  @ExceptionHandler(value = {BookIsUnavailableNowException.class})
+  private ResponseEntity<RequestError> handleBookIsUnavailableNowException(
+      BookIsUnavailableNowException e) {
+    return new ResponseEntity<>(new RequestError(e.getMessage(), e.getHttpStatus()),
+        HttpStatus.NOT_ACCEPTABLE);
+  }
+
+  @ExceptionHandler(value = {MemberDoesNotHaveThisBookException.class})
+  private ResponseEntity<RequestError> handleMemberDoesNotHaveThisBookException(
+      MemberDoesNotHaveThisBookException e) {
+    return new ResponseEntity<>(new RequestError(e.getMessage(), e.getHttpStatus()),
         HttpStatus.BAD_REQUEST);
   }
 }
