@@ -48,4 +48,9 @@ public class MemberController {
   public String borrowBook(@PathVariable Integer memberId, @RequestParam Integer bookId) {
     return memberService.borrowBook(memberId, bookId);
   }
+
+  @PostMapping("/returnBook/{memberId}")
+  public String returnBook(@PathVariable Integer memberId, @RequestParam Integer bookId) {
+    return memberService.returnBook(memberId, bookId);
+  }
 }

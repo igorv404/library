@@ -1,6 +1,7 @@
 package io.igorv404.library.service;
 
 import io.igorv404.library.exception.BookIsUnavailableNowException;
+import io.igorv404.library.exception.MemberDoesNotHaveThisBookException;
 import io.igorv404.library.exception.MemberHasAlreadyBorrowedThisBookException;
 import io.igorv404.library.exception.MemberHasBorrowedBooksException;
 import io.igorv404.library.exception.MemberHasReachedBorrowedBooksLimitException;
@@ -65,5 +66,19 @@ public class MemberService {
     existingMember.getBorrowedBooks().add(existingBook);
     memberRepository.save(existingMember);
     return "Thanks for borrowing the book";
+  }
+
+  public String returnBook(Integer memberId, Integer bookId) {
+    Member existingMember = findById(memberId);
+    Book existingBook = bookService.findById(bookId);
+    if (existingMember.getBorrowedBooks().contains(existingBook)) {
+      existingBook.setAmount(existingBook.getAmount() + 1);
+      bookService.update(existingBook);
+      existingMember.getBorrowedBooks().remove(existingBook);
+    } else {
+      throw new MemberDoesNotHaveThisBookException();
+    }
+    memberRepository.save(existingMember);
+    return "Thanks for returning the book";
   }
 }
