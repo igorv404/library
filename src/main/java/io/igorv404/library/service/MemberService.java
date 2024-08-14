@@ -1,5 +1,6 @@
 package io.igorv404.library.service;
 
+import io.igorv404.library.dto.response.MemberBorrowedBooksDto;
 import io.igorv404.library.exception.BookIsUnavailableNowException;
 import io.igorv404.library.exception.MemberDoesNotHaveThisBookException;
 import io.igorv404.library.exception.MemberHasAlreadyBorrowedThisBookException;
@@ -9,6 +10,7 @@ import io.igorv404.library.model.Book;
 import io.igorv404.library.model.Member;
 import io.igorv404.library.repository.MemberRepository;
 import jakarta.persistence.EntityNotFoundException;
+import java.util.LinkedList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -80,5 +82,19 @@ public class MemberService {
     }
     memberRepository.save(existingMember);
     return "Thanks for returning the book";
+  }
+
+  public List<MemberBorrowedBooksDto> showMemberBorrowedBooks(String name) {
+    List<MemberBorrowedBooksDto> memberBorrowedBooksDtoList = new LinkedList<>();
+    List<Member> matchedMembers = memberRepository.findAllByName(name);
+    matchedMembers.forEach(member -> {
+      List<String> titlesOfBorrowedBooks = member.getBorrowedBooks().stream()
+          .map(Book::getTitle)
+          .toList();
+      MemberBorrowedBooksDto memberBorrowedBooksDto = new MemberBorrowedBooksDto(member.getId(),
+          member.getName(), titlesOfBorrowedBooks);
+      memberBorrowedBooksDtoList.add(memberBorrowedBooksDto);
+    });
+    return memberBorrowedBooksDtoList;
   }
 }

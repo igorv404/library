@@ -24,7 +24,7 @@ public class Member {
   private Integer id;
 
   @Column(nullable = false)
-  @NotBlank
+  @NotBlank(message = "Value can't be null or empty")
   private String name;
 
   @Column(nullable = false)

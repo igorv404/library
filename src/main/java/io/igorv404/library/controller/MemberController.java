@@ -1,5 +1,6 @@
 package io.igorv404.library.controller;
 
+import io.igorv404.library.dto.response.MemberBorrowedBooksDto;
 import io.igorv404.library.model.Member;
 import io.igorv404.library.service.MemberService;
 import java.util.List;
@@ -52,5 +53,10 @@ public class MemberController {
   @PostMapping("/returnBook/{memberId}")
   public String returnBook(@PathVariable Integer memberId, @RequestParam Integer bookId) {
     return memberService.returnBook(memberId, bookId);
+  }
+
+  @GetMapping("/showBorrowedBooks")
+  public List<MemberBorrowedBooksDto> showMemberBorrowedBooks(@RequestParam String memberName) {
+    return memberService.showMemberBorrowedBooks(memberName);
   }
 }
