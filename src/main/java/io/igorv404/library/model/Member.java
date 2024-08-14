@@ -8,8 +8,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotBlank;
 import java.time.LocalDate;
+import java.util.LinkedList;
 import java.util.List;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -18,7 +18,6 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 public class Member {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,5 +31,9 @@ public class Member {
   private final LocalDate membershipDate = LocalDate.now();
 
   @OneToMany
-  private List<Book> borrowedBooks;
+  private List<Book> borrowedBooks = new LinkedList<>();
+
+  public Member(String name) {
+    this.name = name;
+  }
 }
