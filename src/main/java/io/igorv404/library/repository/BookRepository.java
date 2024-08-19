@@ -13,7 +13,7 @@ import org.springframework.stereotype.Repository;
 public interface BookRepository extends JpaRepository<Book, Integer> {
   Optional<Book> findByTitleAndAuthor(String title, String author);
 
-  @Query("SELECT COUNT(m) != 0 FROM Member m JOIN m.borrowedBooks bb WHERE bb.id = :id")
+  @Query("SELECT COUNT(m) != 0 FROM Member m JOIN m.borrowedBooks bb ON bb.id = :id")
   boolean isBookBorrowed(@Param("id") Integer id);
 
   @Query("SELECT DISTINCT b.title FROM Book b INNER JOIN Member m ON b MEMBER OF m.borrowedBooks")

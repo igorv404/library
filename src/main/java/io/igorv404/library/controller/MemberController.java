@@ -36,7 +36,7 @@ public class MemberController {
   }
 
   @PatchMapping("/{id}")
-  public Member update(@PathVariable Integer id, @RequestParam String memberName) {
+  public Member updateName(@PathVariable Integer id, @RequestParam String memberName) {
     return memberService.updateName(id, memberName);
   }
 
@@ -45,18 +45,18 @@ public class MemberController {
     return memberService.delete(id);
   }
 
-  @PostMapping("/borrowBook/{memberId}")
-  public String borrowBook(@PathVariable Integer memberId, @RequestParam Integer bookId) {
+  @PostMapping("/borrowBook")
+  public String borrowBook(@RequestParam Integer memberId, @RequestParam Integer bookId) {
     return memberService.borrowBook(memberId, bookId);
   }
 
-  @PostMapping("/returnBook/{memberId}")
-  public String returnBook(@PathVariable Integer memberId, @RequestParam Integer bookId) {
+  @PostMapping("/returnBook")
+  public String returnBook(@RequestParam Integer memberId, @RequestParam Integer bookId) {
     return memberService.returnBook(memberId, bookId);
   }
 
   @GetMapping("/showBorrowedBooks")
   public List<MemberBorrowedBooksDto> showMemberBorrowedBooks(@RequestParam String memberName) {
-    return memberService.showMemberBorrowedBooks(memberName);
+    return memberService.findAllMemberBorrowedBooksByName(memberName);
   }
 }

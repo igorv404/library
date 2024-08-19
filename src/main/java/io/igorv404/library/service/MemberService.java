@@ -87,9 +87,9 @@ public class MemberService {
     return "Thanks for returning the book";
   }
 
-  public List<MemberBorrowedBooksDto> showMemberBorrowedBooks(String name) {
-    List<MemberBorrowedBooksDto> memberBorrowedBooksDtoList = new LinkedList<>();
+  public List<MemberBorrowedBooksDto> findAllMemberBorrowedBooksByName(String name) {
     List<Member> matchedMembers = memberRepository.findAllByName(name);
+    List<MemberBorrowedBooksDto> memberBorrowedBooksDtoList = new LinkedList<>();
     matchedMembers.forEach(member -> {
       List<String> titlesOfBorrowedBooks = member.getBorrowedBooks().stream()
           .map(Book::getTitle)
