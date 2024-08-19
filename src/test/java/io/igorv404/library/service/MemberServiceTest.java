@@ -226,7 +226,7 @@ class MemberServiceTest {
   }
 
   @Test
-  public void shouldShowMemberBorrowedBooks() {
+  public void shouldFindAllMemberBorrowedBooksByName() {
     final Member member = new Member("John Doe");
     final Book book1 = new Book(1, "Harry Potter and the Philosopher's Stone",
         "Joanne Rowling", 5);
@@ -235,7 +235,7 @@ class MemberServiceTest {
     member.getBorrowedBooks().addAll(List.of(book1, book2));
     member1.getBorrowedBooks().add(book1);
     when(memberRepository.findAllByName(member.getName())).thenReturn(List.of(member, member1));
-    List<MemberBorrowedBooksDto> responseData = memberService.showMemberBorrowedBooks(member.getName());
+    List<MemberBorrowedBooksDto> responseData = memberService.findAllMemberBorrowedBooksByName(member.getName());
     assertNotNull(responseData);
     assertEquals(2, responseData.size());
     assertTrue(responseData.getFirst().borrowedBooks().contains("Harry Potter and the Philosopher's Stone"));

@@ -100,12 +100,13 @@ class BookServiceTest {
 
   @Test
   public void shouldUpdateBook() {
-    Book book = new Book(1, "Harry Potter and the Prisoner of Azkaban", "Joanne Rowling", 10);
-    when(bookRepository.save(book1)).thenReturn(book);
-    Book responseData = bookService.update(book1);
+    when(bookRepository.findById(book2.getId())).thenReturn(Optional.of(book2));
+    when(bookRepository.save(book2)).thenReturn(book2);
+    Book responseData = bookService.update(book2);
     assertNotNull(responseData);
-    assertEquals(book, responseData);
-    verify(bookRepository, times(1)).save(book1);
+    assertEquals(book2, responseData);
+    verify(bookRepository, times(1)).findById(book2.getId());
+    verify(bookRepository, times(1)).save(book2);
   }
 
   @Test

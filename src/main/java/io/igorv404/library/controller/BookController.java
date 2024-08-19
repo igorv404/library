@@ -3,7 +3,6 @@ package io.igorv404.library.controller;
 import io.igorv404.library.dto.response.BorrowedBookDto;
 import io.igorv404.library.model.Book;
 import io.igorv404.library.service.BookService;
-import io.igorv404.library.util.ControllerTemplate;
 import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -21,34 +20,29 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/books")
 @RequiredArgsConstructor
-public class BookController implements ControllerTemplate<Book, Integer> {
+public class BookController {
   private final BookService bookService;
 
-  @Override
   @GetMapping
   public ResponseEntity<List<Book>> findAll() {
     return ResponseEntity.ok(bookService.findAll());
   }
 
-  @Override
   @GetMapping("/{id}")
   public ResponseEntity<Book> findById(@PathVariable Integer id) {
     return ResponseEntity.ok(bookService.findById(id));
   }
 
-  @Override
   @PostMapping
   public ResponseEntity<Book> create(@Valid @RequestBody Book entity) {
     return new ResponseEntity<>(bookService.create(entity), HttpStatus.CREATED);
   }
 
-  @Override
   @PutMapping
   public ResponseEntity<Book> update(@Valid @RequestBody Book entity) {
     return new ResponseEntity<>(bookService.update(entity), HttpStatus.ACCEPTED);
   }
 
-  @Override
   @DeleteMapping("/{id}")
   public ResponseEntity<String> delete(@PathVariable Integer id) {
     return new ResponseEntity<>(bookService.delete(id), HttpStatus.ACCEPTED);
@@ -59,7 +53,7 @@ public class BookController implements ControllerTemplate<Book, Integer> {
     return ResponseEntity.ok(bookService.findAllBorrowedBooks());
   }
 
-  @GetMapping("/showBorrowedBooksInfo")
+  @GetMapping("/showBorrowedBooksInDetails")
   public ResponseEntity<List<BorrowedBookDto>> showInfoOfBorrowedBooks() {
     return ResponseEntity.ok(bookService.showInfoOfBorrowedBooks());
   }
